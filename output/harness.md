@@ -635,3 +635,22 @@ the database), and no agent run was repeated. The saved drafts still have two sm
 changed for: draft 1 calls the product "the white CC tee" instead of Classic Bulldog Tee (`get_inventory_status` does not return
 the product name), and it names the vendor and says "paid". The screenshots in `output/resolved_board.html` were taken before the draft
 panel existed, so they do not show it.
+
+---
+
+## Problem 11: Publishing to GitHub
+
+The project is published at **https://github.com/vhb13/hw5** (public, branch `main`). The same URL is in `output/github_url.txt`.
+
+What was checked before and after publishing:
+- **Layout.** The repository has every file in the expected layout. Four were missing and were added: the root `README.md`, `.env.example`, a root `requirements.txt` (it replaces the two separate requirements files, which were removed), and `output/github_url.txt`. Extra files that are not in the layout were kept because the app needs them: `backend/team.py`, `config.py`, `audit.py`, `run_ticket.py` and the tests, `mcp_server/db.py`, `reset_db.py` and `test_tools.py`, the `frontend/` source, `output/agent_messages.json`, `output/screenshots/`, `data.zip` and a small `.gitattributes` that stops line-ending conversion from touching the databases and images.
+- **Databases.** Both are in the repository and were downloaded again from GitHub without logging in: `data/campus_customs.db` (the original, unchanged) and `data/campus_customs_new.db` (the working copy, left in the state the Problem 9 run ended in).
+- **Secrets.** The real key lives only in an untracked `.env`, which `.gitignore` excludes; `.env.example` has a placeholder. All 73 files in the commit were searched for the real Portkey key and the other credentials kept outside the project, and none were found. The repository has no earlier history, so nothing could have been committed before. A separate plain-text file with credentials sits outside the project folder and is not part of the repository.
+- **Portability fix.** `.mcp.json` used to point at `C:\Python314\python.exe`, which would fail on any other computer. It now says `python`, and the backend starts the MCP server with the same Python it runs in (`backend/config.py`).
+- **Clean-clone test.** The commit was cloned into an empty folder and the README was followed: new virtual environment, `pip install -r requirements.txt`, `npm install`, `.env` from `.env.example`, `python mcp_server/reset_db.py` (balance $3,400.00, tickets 101 to 103 open), `python mcp_server/test_tools.py` (39 of 39 passed), backend on port 8000 and dashboard on port 5173. A real run of ticket 102 with the live model prepared the rent payment, the approval took checking to $1,000.00, a repeat approval was refused, and the dashboard loaded in a browser. That test copy was deleted afterwards. The test was done on the local commit before it was pushed.
+
+Things to know:
+- Git needed a one-folder "safe directory" exception in the user-level Git settings, because the project folder is owned by a different Windows account than the current user.
+- The commits use the GitHub no-reply address for `vhb13`, so no personal email address is published.
+- The GitHub account used was the one logged in to the GitHub CLI (`vhb13`). The credentials file mentions a different username.
+- The model-based tests (`test_agents.py`, `test_api.py`) and `frontend/e2e.mjs` were not re-run for this problem.
