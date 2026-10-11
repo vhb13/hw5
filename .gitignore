@@ -1,0 +1,23 @@
+# secrets: never commit the real .env, only .env.example
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# frontend
+frontend/node_modules/
+frontend/dist/
+frontend/e2e-shots/
+
+# editor / OS / scratch files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+output/audit_trail.unreadable-*.json
+output/agent_messages.unreadable-*.json

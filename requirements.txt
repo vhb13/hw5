@@ -1,0 +1,10 @@
+# Python dependencies for the whole project (MCP server, agents, FastAPI backend, tests).
+# Install into a virtual environment:  python -m venv .venv  then  pip install -r requirements.txt
+# Tested with Python 3.14. "mcp" has to stay below 2.0 because PydanticAI 1.x needs the 1.x MCP client.
+pydantic-ai-slim[mcp,openai]>=1.107,<2
+mcp<2
+fastmcp-slim[server]
+python-dotenv
+fastapi
+uvicorn
+httpx

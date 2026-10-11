@@ -1,0 +1,211 @@
+{
+  "run_date": "2026-10-10",
+  "shop_date": "2026-08-31",
+  "note": "Built from data/campus_customs_new.db, output/audit_trail.json and output/agent_messages.json after the Problem 9 runs. Times in the audit trail are UTC.",
+  "starting_checking_balance": 3400.0,
+  "ending_checking_balance": 152.0,
+  "tickets": [
+    {
+      "ticket_id": 101,
+      "type": "customer_order",
+      "subject": "Bulldog tee",
+      "final_status": "resolved",
+      "resolved": true,
+      "outcome": "Resolved. Invoice 501 ($840) and a $8 purchase order for 1 tee were approved and paid, so vendor 1 was unblocked and the tee is on order (earliest arrival 2026-09-05); a customer draft is saved, not sent.",
+      "agent_runs": 6,
+      "run_outcomes": [
+        "needs human approval",
+        "needs human approval",
+        "needs investigation",
+        "needs investigation",
+        "needs investigation",
+        "resolved"
+      ],
+      "agents_that_contributed": [
+        {
+          "agent": "boss",
+          "what_it_did": "Read the ticket, asked Inventory first, then Accounting; recorded the status after every run (awaiting approval twice, needs investigation three times, then resolved); in run 6 asked Customer Service and marked the ticket resolved.",
+          "mcp_tools_used": {
+            "get_ticket": 6,
+            "update_ticket_status": 6
+          }
+        },
+        {
+          "agent": "inventory",
+          "what_it_did": "Checked stock (CC-TEE-WHITE size S = 0), found vendor 1 blocked by unpaid invoice 501 in run 1 and unblocked after it was paid, estimated the restock (1 tee, $8, earliest arrival 2026-09-05), and asked Accounting whether it was affordable.",
+          "mcp_tools_used": {
+            "get_inventory_status": 8,
+            "get_ticket": 9,
+            "get_vendor_status": 5,
+            "estimate_restock": 5
+          }
+        },
+        {
+          "agent": "accounting",
+          "what_it_did": "Confirmed invoice 501 ($840, 3 days overdue) and cash, prepared proposal 1 (invoice) and, after vendor 1 was unblocked, proposal 2 ($8 purchase order); in later runs confirmed from recent_payments that both were paid and what the $8 bought.",
+          "mcp_tools_used": {
+            "get_accounting_status": 14,
+            "propose_payment": 2,
+            "get_ticket": 12,
+            "get_vendor_status": 7
+          }
+        },
+        {
+          "agent": "customer_service",
+          "what_it_did": "Run 6 only: saved draft 1 for review (not sent): size S is out of stock, an order for one tee is placed and paid, 2026-09-05 is only an estimated earliest arrival.",
+          "mcp_tools_used": {
+            "get_ticket": 1,
+            "save_customer_draft": 1
+          }
+        }
+      ],
+      "human_approvals": [
+        {
+          "proposal_id": 1,
+          "payment_id": 1,
+          "kind": "invoice",
+          "ref_id": 501,
+          "amount": 840.0,
+          "approved_by": "Claude (acting for Vy)",
+          "approved_via": "dashboard Approve button (two clicks)",
+          "paid_at": "2026-08-31",
+          "checking_balance_after": 2560.0
+        },
+        {
+          "proposal_id": 2,
+          "payment_id": 2,
+          "kind": "purchase_order",
+          "ref_id": 1,
+          "amount": 8.0,
+          "approved_by": "Claude (acting for Vy)",
+          "approved_via": "dashboard Approve button (two clicks)",
+          "paid_at": "2026-08-31",
+          "checking_balance_after": 2552.0
+        }
+      ],
+      "customer_draft": {
+        "draft_id": 1,
+        "status": "draft",
+        "sent": false
+      },
+      "checking_balance_change": -848.0,
+      "checking_balance_after_resolution": 2552.0,
+      "problems_during_run": "Runs 3 to 5 ended 'needs investigation' because the agents could not verify that the order was placed; this was fixed by exposing payment details and stating the shop's order rule in the prompts (see harness.md, Problem 9)."
+    },
+    {
+      "ticket_id": 102,
+      "type": "rent_notice",
+      "subject": "Rent due",
+      "final_status": "resolved",
+      "resolved": true,
+      "outcome": "Resolved. The $2,400 rent for the 2026-09-02 installment was approved and paid; the lease now shows the next installment due 2026-10-02.",
+      "agent_runs": 3,
+      "run_outcomes": [
+        "needs human approval",
+        "needs investigation",
+        "resolved"
+      ],
+      "agents_that_contributed": [
+        {
+          "agent": "boss",
+          "what_it_did": "Read the ticket; run 1 asked Facilities, run 2 asked Facilities and Accounting (got stuck), run 3 asked Accounting and resolved the ticket.",
+          "mcp_tools_used": {
+            "get_ticket": 3,
+            "update_ticket_status": 3
+          }
+        },
+        {
+          "agent": "facilities",
+          "what_it_did": "Confirmed lease 1 is $2,400 a month, next due 2026-09-02, 2 days after the shop date, matching the notice; asked Accounting to prepare payment; later checked the lease after payment (next_due moved to 2026-10-02).",
+          "mcp_tools_used": {
+            "get_ticket": 5,
+            "get_facilities_status": 5
+          }
+        },
+        {
+          "agent": "accounting",
+          "what_it_did": "Checked cash, prepared proposal 3 ($2,400 rent); after approval confirmed from recent_payments that payment 3 was paid for the 2026-09-02 installment.",
+          "mcp_tools_used": {
+            "get_ticket": 4,
+            "get_accounting_status": 4,
+            "propose_payment": 1
+          }
+        }
+      ],
+      "human_approvals": [
+        {
+          "proposal_id": 3,
+          "payment_id": 3,
+          "kind": "rent",
+          "ref_id": 1,
+          "amount": 2400.0,
+          "approved_by": "Claude (acting for Vy)",
+          "approved_via": "dashboard Approve button (two clicks)",
+          "paid_at": "2026-08-31",
+          "checking_balance_after": 152.0
+        }
+      ],
+      "customer_draft": null,
+      "checking_balance_change": -2400.0,
+      "checking_balance_after_resolution": 152.0,
+      "problems_during_run": "Run 2 ended 'needs investigation' because the agents did not know the lease's next_due moves forward a month after rent is paid; fixed by stating that rule in the prompts."
+    },
+    {
+      "ticket_id": 103,
+      "type": "price_override",
+      "subject": "Bulk hoodie discount",
+      "final_status": "needs_investigation",
+      "resolved": false,
+      "outcome": "Not resolved (needs investigation). Only 8 of 20 hoodies are in stock; restocking 12 costs $264 but checking has $152, and there is no discount policy to apply. A draft reply is saved, not sent. Nothing was approved or paid.",
+      "agent_runs": 1,
+      "run_outcomes": [
+        "needs investigation"
+      ],
+      "agents_that_contributed": [
+        {
+          "agent": "boss",
+          "what_it_did": "Read the ticket, asked Inventory first (stock check before price), then Accounting and Customer Service; set the status to needs investigation.",
+          "mcp_tools_used": {
+            "get_ticket": 1,
+            "update_ticket_status": 1
+          }
+        },
+        {
+          "agent": "inventory",
+          "what_it_did": "Found 8 of the 20 size-M hoodies in stock (short 12), estimated a 12-unit restock at $264 (5-day lead time), and asked Accounting; Accounting reported $152 available, so no purchase was recommended.",
+          "mcp_tools_used": {
+            "get_inventory_status": 1,
+            "get_vendor_status": 1,
+            "estimate_restock": 1
+          }
+        },
+        {
+          "agent": "accounting",
+          "what_it_did": "Reported cost $22 and list $58 (margin $36, 62.1%), so any price must stay above $22; said no bulk-discount policy or approval authority exists in the records; confirmed the $264 restock is $112 more than the $152 available; prepared no payment.",
+          "mcp_tools_used": {
+            "get_accounting_status": 2,
+            "get_ticket": 1
+          }
+        },
+        {
+          "agent": "customer_service",
+          "what_it_did": "Saved draft 2 for review (not sent): 8 hoodies available now, the other 12 and the bulk discount cannot be confirmed yet.",
+          "mcp_tools_used": {
+            "get_ticket": 2,
+            "get_inventory_status": 1,
+            "save_customer_draft": 1
+          }
+        }
+      ],
+      "human_approvals": [],
+      "customer_draft": {
+        "draft_id": 2,
+        "status": "draft",
+        "sent": false
+      },
+      "checking_balance_change": 0,
+      "checking_balance_after_resolution": null,
+      "problems_during_run": "Not resolved: it needs a person (discount policy and $112 of cash the shop does not have)."
+    }
+  ]
+}
